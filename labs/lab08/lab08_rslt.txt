@@ -1,0 +1,48 @@
+--------------------------------- Readings from the Serial Monitor ----------------------
+
+---- Opened the serial port COM7 ----
+
+Raw ADC reading: 893
+Temperature reading: 19.180138 C
+Raw ADC reading: 892
+Temperature reading: 19.648281 C
+Raw ADC reading: 892
+Temperature reading: 19.648281 C
+Raw ADC reading: 891
+Temperature reading: 20.116390 C
+
+--------------------------------- The conversions by hand -------------------------------
+To obtain the value of floating point temp from rawADC reading we need to:
+
+1. Calculate the voltage from the raw ADC value:
+   V_ADC = (rawADC / ADC_max) * V_ref
+
+2. Convert the voltage to temperature using linear approximation:
+   T_temp = 27 - ((V_ADC - 0.706) / 0.001721)
+
+Where:
+- V_ADC is the voltage represented by the raw ADC value in HEX,
+- V_ref is the reference voltage (in this case, 3.3V),
+- ADC_max is the maximum value of the ADC (in this case, 2^12 = 4096),
+- T_temp is the temperature in Celsius.
+
+Equivalent Mathematical Equations (expanded):
+
+V_ADC = (rawADC / 4096) * 3.3
+T_temp = 27 - ((V_ADC - 0.706) / 0.001721)
+
+Reading 1:
+rawADC = 893 (in HEX) => V_ADC = (893 / 4096) * 3.3 = 0.7194580077
+T_temp = 27 - ((0.7194580077 - 0.706) / 0.001721) => 19.18012329 (in C in FLOAT)
+
+Reading 2:
+rawADC = 892 (in HEX) => V_ADC = (892 / 4096) * 3.3 = 0.7186523438
+T_temp = 27 - ((0.7186523438 - 0.706) / 0.001721) => 19.64826046 (in C in FLOAT)
+
+Reading 3:
+rawADC = 892 (in HEX) => V_ADC = (892 / 4096) * 3.3 = 0.7186523438
+T_temp = 27 - ((0.7186523438 - 0.706) / 0.001721) => 19.64826046 (in C in FLOAT)
+
+Reading 4:
+rawADC = 891 (in HEX) => V_ADC = (892 / 4096) * 3.3 = 0.7178466798
+T_temp = 27 - ((0.7178466798 - 0.706) / 0.001721) => 20.11639762 (in C in FLOAT)

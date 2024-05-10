@@ -1,0 +1,39 @@
+XIP Status to be: 0
+Running time when cache is OFF
+
+-------------------------All times are in microseconds------------------------
+Running time of single-core: 4281447
+Running time of single-precision Wallis on single-core: 1948717
+Running time of double-precision Wallis on single-core: 2332730
+Running time of multicore: 3705322
+Running time of single-precision Wallis on multicore: 3705322
+Running time of double-precision Wallis on multicore: 3705315
+
+
+XIP Status to be: 1
+Running time when cache is ON
+
+-------------------------All times are in microseconds------------------------
+Running time of single-core: 660999
+Running time of single-precision Wallis on single-core: 227021
+Running time of double-precision Wallis on single-core: 433978
+Running time of multicore: 437370
+Running time of single-precision Wallis on multicore: 437370
+Running time of double-precision Wallis on multicore: 437370
+
+
+OBSERVATIONS:
+1.) With the cache off, the execution times are significantly longer compared to when the cache is on. 
+    This indicates that caching is indeed effective in reducing access latency to frequently used data and instructions.
+2.) The single-core and multi-core uncached execution times are ~10 times higher compared to cached 
+    single-core and multi-core execution times. This suggests that the workload can benefit from caching, 
+    as shown by the reduced execution times on cached excecution.
+3.) The XIP (execute in place) status seems to have a significant impact on execution times. 
+    Enabling XIP (status 1) results in substantially faster execution times across all scenarios 
+    compared to when XIP is disabled (status 0). This suggests that executing code directly from 
+    non-volatile storage (e.g., flash memory) can be more efficient than loading it into RAM first, 
+    likely due to reduced memory access latency.
+4.)In summary, the provided execution times reveal insights into the performance characteristics of 
+   the system under different cache configurations and XIP statuses, highlighting opportunities for optimization
+   especially in the domain of embedded systems and other resource-constrained environments where ensuring 
+   that critical code segments are stored in cache-friendly ways can lead to significant performance improvements.

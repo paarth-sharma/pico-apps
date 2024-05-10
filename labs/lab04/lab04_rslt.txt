@@ -1,0 +1,71 @@
+Output of command 'info registers':
+
+-> info registers
+    r0             0x200006a0          536872608
+    r1             0x1000034b          268436299
+    r2             0x20000238          536871480
+    r3             0x200002ec          536871660
+    r4             0x10000264          268436068
+    r5             0x20041f01          537140993
+    r6             0x18000000          402653184
+    r7             0x0                 0
+    r8             0xffffffff          -1
+    r9             0xffffffff          -1
+    r10            0xffffffff          -1
+    r11            0xffffffff          -1
+    r12            0x34000040          872415296
+    sp             0x20042000          0x20042000
+    lr             0x10000223          268436003
+    pc             0x1000034a          0x1000034a <main>
+    xPSR           0x61000000          1627389952
+    msp            0x20042000          0x20042000
+    psp            0xfffffffc          0xfffffffc
+    primask        0x0                 0
+    basepri        0x0                 0
+    faultmask      0x0                 0
+    control        0x0                 0
+    {"output":"","token":32,"outOfBandRecord":[],"resultRecords":{"resultClass":"done","results":[]}}
+
+Output of command 'disassemble main_asm, +26':
+
+-> disassemble main_asm, +26
+   Dump of assembler code from 0x10000360 to 0x1000037a:
+    0x10000360 <main_asm+0>:	movs	r0, #25
+    0x10000362 <main_asm+2>:	bl	0x10000304 <asm_gpio_init>
+    0x10000366 <main_asm+6>:	movs	r0, #25
+    0x10000368 <main_asm+8>:	movs	r1, #1
+    0x1000036a <main_asm+10>:	bl	0x1000030c <asm_gpio_set_dir>
+    0x1000036e <loop+0>:	ldr	r0, [pc, #36]	; (0x10000394 <led_set_state+8>)
+    0x10000370 <loop+2>:	bl	0x1000138c <sleep_ms>
+    0x10000374 <loop+6>:	bl	0x1000037a <sub_toggle>
+    0x10000378 <loop+10>:	b.n	0x1000036e <loop>
+    End of assembler dump.
+    {"output":"","token":40,"outOfBandRecord":[],"resultRecords":{"resultClass":"done","results":[]}}
+
+1.) Entry point address (in hex) of the "blink_asm" application:
+-> 0x1000034a (hex)
+   Since this is the address of the int main() that is the very first line of code that is executed in a c program, 
+   so it follows that the entry point to the application blink_asm would be where int main is in the memory
+
+2.) Entry  point address (in hex) of the “main_asm” function:
+-> 0x10000360 (hex)
+   The first instruction of the main_asm function in the .S file resides here in memory.
+
+3.) Describe each of the differences between the assembly that was written for 
+    the main_asm function and the version that was executed according to GDB:
+->  Looking at the disassembly provided, we can compare the written assembly code for 
+    the main_asm function with the version executed according to GDB:
+    . In the written assembly code, the function seems to contain a loop labeled as "loop" 
+      which calls sleep_ms and sub_toggle functions in the loop.
+
+    However, in the executed version according to GDB, we see:
+    . The first four instructions seem to match the written code, which initializes GPIO and sets its direction.
+    . However, after that, it seems to jump directly to loop+0, bypassing the loop initialization.
+    . The loop in the executed version seems to be implemented through branch instructions (b.n) to loop instead 
+      of a direct loop construct.
+
+    The primary differences seem to be in the handling of the loop construct. In the written assembly, 
+    there's a loop construct labeled as "loop", while in the executed version according to GDB, the 
+    loop is implemented using branch instructions.
+    
+    These differences might indicate optimizations by the compiler

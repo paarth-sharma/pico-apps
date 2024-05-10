@@ -1,0 +1,16 @@
+Run-time of single-core: 660999
+Run-time of single-core single-precision Wallis approximation: 227021
+Run-time of single-core double-precision Wallis approximation: 433978
+Run-time of multi-core: 438445
+Run-time of multi-core single-precision Wallis approximation: 438445
+Run-time of multi-core double-precision Wallis approximation: 438445
+
+Observations:
+- A single-core run (sequential), runs the single and double precision functions one after the other, therefore the time
+taken is the sum of the excution times for both the functions. 
+- A multi-core run (parallel), uses multiple cores of the CPU of the PI-PICO to execute the set of instructions together
+at the same time, parallely instead of one after the other and thus both the functions take the same time frame to be excuted.
+effectively multitasking.
+
+Therefore it is noted that by leveraging multiple cores, the Multi-core approach i.e. parallel execution of the functions
+is much faster than single-core i.e. sequential execution.
